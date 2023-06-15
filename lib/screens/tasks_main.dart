@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:todolist/widgets/bottom_navigation.dart';
 
 class TasksMain extends StatelessWidget {
   const TasksMain({super.key});
@@ -23,6 +24,7 @@ class TasksMain extends StatelessWidget {
           GoRouter.of(context).go('/details/1');
         },
       ),
+      bottomNavigationBar: const BottomNavigation(),
     );
   }
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:todolist/providers/task_provider.dart';
+import 'package:todolist/screens/task_form.dart';
 import 'package:todolist/screens/tasks_main.dart';
 import 'package:todolist/screens/task_details.dart';
-import 'package:todolist/providers/task_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -27,7 +27,13 @@ final GoRouter _router = GoRouter(routes: [
           builder: (BuildContext context, GoRouterState state) {
             return TaskDetails(id: int.parse(state.pathParameters['id']!));
           },
-        )
+        ),
+        GoRoute(
+            name: 'form',
+            path: 'taskform',
+            builder: (BuildContext context, GoRouterState state) {
+              return const TaskForm();
+            })
       ])
 ]);
 
