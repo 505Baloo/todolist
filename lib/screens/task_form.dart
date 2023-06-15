@@ -16,10 +16,21 @@ class TaskForm extends StatefulWidget {
 
 class TaskFormState extends State<TaskForm> {
   final _formKey = GlobalKey<FormState>();
-  final _contentController = TextEditingController();
-  final _categoryController = TextEditingController();
-  final _priorityController = TextEditingController();
+  late TextEditingController _contentController;
+  late TextEditingController _categoryController;
+  late TextEditingController _priorityController;
+  late bool _isEditing; // TODO: if _isEditing change logic
   final uuid = const Uuid();
+
+  @override
+  void initState() {
+    super.initState();
+    _isEditing = widget.task != null;
+    _contentController = TextEditingController(text: widget.task?.content);
+    _categoryController = TextEditingController(text: widget.task?.category);
+    _priorityController =
+        TextEditingController(text: widget.task?.priority.toString());
+  }
 
   @override
   void dispose() {
