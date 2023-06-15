@@ -23,23 +23,28 @@ class TaskFormState extends State<TaskForm> {
   @override
   void dispose() {
     contentController.dispose();
+    categoryController.dispose();
+    priorityController.dispose();
     super.dispose();
   }
 
   Task? handleValidation() {
-    Task? testTask;
+    Task? task;
     if (_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Processing your form')),
+        SnackBar(
+          content: const Text('Task added to your list!'),
+          backgroundColor: Colors.green.shade400,
+        ),
       );
-      testTask = Task(
+      task = Task(
           content: contentController.text,
           createdAt: DateTime.now(),
           category: categoryController.text,
           priority: int.parse(priorityController.text),
           id: uuid.v4());
     }
-    return testTask;
+    return task;
   }
 
   @override
@@ -49,61 +54,69 @@ class TaskFormState extends State<TaskForm> {
       body: Form(
           key: _formKey,
           child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 200,
-                  height: 75,
-                  child: TextFormField(
-                    controller: contentController,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Task' 's content'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'This field is required';
-                      }
-                      return null;
-                    },
-                  ),
+            child: Card(
+              elevation: 6,
+              shadowColor: Colors.green.shade400,
+              child: Padding(
+                padding: const EdgeInsets.all(50.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    SizedBox(
+                      width: 200,
+                      height: 75,
+                      child: TextFormField(
+                        controller: contentController,
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Task\'s content'),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'This field is required';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      width: 200,
+                      height: 75,
+                      child: TextFormField(
+                        controller: categoryController,
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Task\'s category'),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 200,
+                      height: 75,
+                      child: TextFormField(
+                        controller: priorityController,
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Task\'s priority'),
+                        validator: (value) {
+                          var checkIfInteger = int.tryParse(value!);
+                          if (checkIfInteger == null || value.length > 1) {
+                            return 'This field must be an integer';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Task? task = handleValidation();
+                        taskProvider.add(task!);
+                        GoRouter.of(context).go('/');
+                      },
+                      child: const Text('Submit'),
+                    )
+                  ],
                 ),
-                SizedBox(
-                  width: 200,
-                  height: 75,
-                  child: TextFormField(
-                    controller: categoryController,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Task' 's category'),
-                  ),
-                ),
-                SizedBox(
-                  width: 200,
-                  height: 75,
-                  child: TextFormField(
-                    controller: priorityController,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Task' 's priority'),
-                    validator: (value) {
-                      var checkIfInteger = int.tryParse(value!);
-                      if (checkIfInteger == null || value.length > 1) {
-                        return 'This field must be an integer';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Task? task = handleValidation();
-                    taskProvider.add(task!);
-                    GoRouter.of(context).go('/');
-                  },
-                  child: const Text('Submit'),
-                )
-              ],
+              ),
             ),
           )),
       bottomNavigationBar: const BottomNavigation(),

@@ -10,13 +10,15 @@ class TaskListBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     final taskProvider = Provider.of<TaskProvider>(context);
     final tasks = taskProvider.listOfTasks;
-    return ListView.builder(
-      itemCount: tasks.length,
-      itemBuilder: (BuildContext context, int index) {
-        final id = taskProvider.listOfTasks[index].id;
-        final task = taskProvider.getById(id!);
-        return TaskPreview(task: task);
-      },
-    );
+    return Consumer<TaskProvider>(builder: (context, taskProvider, _) {
+      return ListView.builder(
+        itemCount: tasks.length,
+        itemBuilder: (BuildContext context, int index) {
+          final id = taskProvider.listOfTasks[index].id;
+          final task = taskProvider.getById(id!);
+          return TaskPreview(task: task);
+        },
+      );
+    });
   }
 }
