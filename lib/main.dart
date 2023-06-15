@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:todolist/models/task.dart';
 import 'package:todolist/providers/task_provider.dart';
 import 'package:todolist/screens/task_form.dart';
 import 'package:todolist/screens/tasks_main.dart';
@@ -25,7 +26,15 @@ final GoRouter _router = GoRouter(routes: [
           name: 'details',
           path: 'details/:id',
           builder: (BuildContext context, GoRouterState state) {
-            return TaskDetails(id: int.parse(state.pathParameters['id']!));
+            try {
+              final String taskId = state.pathParameters['id']!;
+              final Task task =
+                  Provider.of<TaskProvider>(context, listen: false)
+                      .getById(taskId);
+              return TaskDetails(task: task);
+            } catch (e) {
+              return const TasksMain();
+            }
           },
         ),
         GoRoute(

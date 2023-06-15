@@ -21,10 +21,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
       'Index 1: New Task',
       style: optionStyle,
     ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
   ];
 
   void _onItemTapped(int index) {
@@ -48,7 +44,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.add),
-          label: 'New Task',
+          label: 'AddTask',
         ),
       ],
       currentIndex: _selectedIndex,
