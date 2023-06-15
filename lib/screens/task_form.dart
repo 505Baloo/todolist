@@ -7,7 +7,8 @@ import 'package:todolist/widgets/bottom_navigation.dart';
 import 'package:uuid/uuid.dart';
 
 class TaskForm extends StatefulWidget {
-  const TaskForm({super.key});
+  const TaskForm({super.key, this.task});
+  final Task? task;
 
   @override
   TaskFormState createState() => TaskFormState();
@@ -15,16 +16,16 @@ class TaskForm extends StatefulWidget {
 
 class TaskFormState extends State<TaskForm> {
   final _formKey = GlobalKey<FormState>();
-  final contentController = TextEditingController();
-  final categoryController = TextEditingController();
-  final priorityController = TextEditingController();
+  final _contentController = TextEditingController();
+  final _categoryController = TextEditingController();
+  final _priorityController = TextEditingController();
   final uuid = const Uuid();
 
   @override
   void dispose() {
-    contentController.dispose();
-    categoryController.dispose();
-    priorityController.dispose();
+    _contentController.dispose();
+    _categoryController.dispose();
+    _priorityController.dispose();
     super.dispose();
   }
 
@@ -38,10 +39,10 @@ class TaskFormState extends State<TaskForm> {
         ),
       );
       task = Task(
-          content: contentController.text,
+          content: _contentController.text,
           createdAt: DateTime.now(),
-          category: categoryController.text,
-          priority: int.parse(priorityController.text),
+          category: _categoryController.text,
+          priority: int.parse(_priorityController.text),
           id: uuid.v4());
     }
     return task;
@@ -67,7 +68,7 @@ class TaskFormState extends State<TaskForm> {
                       width: 200,
                       height: 75,
                       child: TextFormField(
-                        controller: contentController,
+                        controller: _contentController,
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: 'Task\'s content'),
@@ -83,7 +84,7 @@ class TaskFormState extends State<TaskForm> {
                       width: 200,
                       height: 75,
                       child: TextFormField(
-                        controller: categoryController,
+                        controller: _categoryController,
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: 'Task\'s category'),
@@ -93,7 +94,7 @@ class TaskFormState extends State<TaskForm> {
                       width: 200,
                       height: 75,
                       child: TextFormField(
-                        controller: priorityController,
+                        controller: _priorityController,
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: 'Task\'s priority'),
